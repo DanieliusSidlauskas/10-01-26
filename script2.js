@@ -1,68 +1,33 @@
 let egzaminai = {
-
-    matematika: 8,
-    lietuviu: 9,
-    istorija: 6,
-    biologija: 3,
-    informatika: 10,
-
-    // 1 metodas
-    teigiamiPazymiai: function() {
-
-        let suma = 0;
-        let kiekis = 0;
-
-        // Einame per visus objekto elementus
-        for (let dalykas in this) {
-
-            // Patikriname, ar tai yra skaičius
-            if (typeof this[dalykas] === "number") {
-
-                // Patikriname, ar pažymys teigiamas
-                if (this[dalykas] >= 4) {
-                    suma = suma + this[dalykas];
-                    kiekis++;
-                }
-            }
-        }
-
-        // Apskaičiuojame vidurkį
-        let vidurkis = suma / kiekis;
-
-        return vidurkis;
+    pazymiai: {
+        matematika: 8,
+        lietuviu: 6,
+        anglu: 9,
+        fizika: 3,
+        istorija: 10
     },
 
-    // 2 metodas
+    // 1 metodas – teigiami pažymiai ir jų vidurkis
+    teigiamuVidurkis: function() {
+        let teigiami = Object.values(this.pazymiai)
+            .filter(pazymys => pazymys >= 4);
+
+        let suma = teigiami.reduce((a, b) => a + b, 0);
+
+        return suma / teigiami.length;
+    },
+
+    // 2 metodas – geriausiai įvertinto dalyko pavadinimas
     geriausiasDalykas: function() {
+        let dalykai = Object.entries(this.pazymiai);
 
-        let didziausias = -1;
-        let dalykoPavadinimas = "";
+        let geriausias = dalykai.reduce((a, b) => {
+            return b[1] > a[1] ? b : a;
+        });
 
-        // Einame per visus objekto elementus
-        for (let dalykas in this) {
-
-            // Patikriname, ar reikšmė yra skaičius
-            if (typeof this[dalykas] === "number") {
-
-                // Jeigu randame didesnį pažymį
-                if (this[dalykas] > didziausias) {
-
-                    didziausias = this[dalykas];
-                    dalykoPavadinimas = dalykas;
-                }
-            }
-        }
-
-        return dalykoPavadinimas;
+        return geriausias[0];
     }
 };
 
-// Išvedame pirmojo metodo rezultatą
-console.log("Teigiamų pažymių vidurkis:",
-    egzaminai.teigiamiPazymiai()
-);
-
-// Išvedame antrojo metodo rezultatą
-console.log("Geriausiai įvertintas dalykas:",
-    egzaminai.geriausiasDalykas()
-);
+console.log("Teigiamų pažymių vidurkis:", egzaminai.teigiamuVidurkis());
+console.log("Geriausiai įvertintas dalykas:", egzaminai.geriausiasDalykas());
